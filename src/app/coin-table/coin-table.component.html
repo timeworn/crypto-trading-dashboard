@@ -1,0 +1,56 @@
+<div class="material">
+  <p>Ostatnia aktualizacja: {{ lastUpdate | async | date: 'HH:mm:ss': '+0100'}}</p>
+  <p>Następna aktualizacja za: {{ counter | async }}s</p>
+</div>
+
+<div *ngIf="error | async" [style.color]="'red'"> {{ error | async }} </div>
+
+<ngx-datatable
+  class="material"
+  [rows]="coinsStats | async"
+  [columnMode]="tableConfig.colunMode"
+  [rowHeight]="tableConfig.rowHeight"
+  [sortType]="tableConfig.sortType"
+  [loadingIndicator]="isLoading | async"
+  [limit]="tableConfig.limit"
+  [footerHeight]="tableConfig.footerHeight"
+  [headerHeight]="tableConfig.headerHeight"
+  [columns]="tableConfig.columns"
+  [sorts]="tableConfig.sorts">
+  <ngx-datatable-column
+    name="{{ columns.long.name }}" prop="{{ columns.long.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.long }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column
+    name="{{ columns.short.name }}" prop="{{ columns.short.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{ row.short }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column
+    name="{{ columns.price.name }}" prop="{{ columns.price.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      $ {{ row.price && row.price.toFixed(4) }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column
+    name="{{ columns.mktcap.name }}" prop="{{ columns.mktcap.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      $ {{ row.mktcap && row.mktcap.toFixed(0) }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column
+    name="{{ columns.volume.name }}" prop="{{ columns.volume.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      $ {{ row.volume && row.volume.toFixed(0) }}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column
+    name="{{ columns.cap24hrChange.name }}" prop="{{ columns.cap24hrChange.prop }}">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <span [style.color]="getCap24hrChangeColor(row.cap24hrChange)">{{ row.cap24hrChange && row.cap24hrChange.toFixed(2) }}</span>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
